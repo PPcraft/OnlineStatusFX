@@ -1,6 +1,8 @@
 package ppcraft.operations;
 
 import javafx.fxml.FXMLLoader;
+import ppcraft.controllers.ControllerMain;
+import ppcraft.objects.ChartData;
 
 import java.util.ResourceBundle;
 
@@ -22,11 +24,23 @@ public class PrepareListThread extends Thread {
             int current = PrepareList.threadSize.get(j) - count +totalizer;
             String siteAddress = PrepareList.addressStatusPingList.get(current).getAddress();
             PrepareList.addressStatusPingList.get(current).setStatus(Ping.aliveStatus(siteAddress));
+            long pingTime;
+            int ping;
             if (PrepareList.addressStatusPingList.get(current).getStatus().equals(fxmlLoader.getResources().getString("offline"))){
                 PrepareList.addressStatusPingList.get(current).setPing("---");
+                ping = 0;
+                pingTime = System.currentTimeMillis();
             }else {
                 PrepareList.addressStatusPingList.get(current).setPing(Ping.ping(siteAddress));
+                if (PrepareList.addressStatusPingList.get(current).getPing().split(" ")[0].equals("<")){
+                    ping = 1;
+                }else {
+                    ping = Integer.parseInt(PrepareList.addressStatusPingList.get(current).getPing().split(" ")[0]);
+                }
+                pingTime = System.currentTimeMillis();
             }
+            ChartData chartData = new ChartData(siteAddress, pingTime, ping);
+            ControllerMain.dataForChart.add(chartData);
             count--;
         }
     }

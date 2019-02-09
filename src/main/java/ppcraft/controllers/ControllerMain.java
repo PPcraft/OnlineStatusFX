@@ -20,16 +20,21 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import ppcraft.impls.CollectionAddressDirectory;
 import ppcraft.objects.AddressStatusPing;
+import ppcraft.objects.ChartData;
 import ppcraft.operations.*;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import static ppcraft.main.Main.*;
 
 public class ControllerMain implements Initializable {
     protected static CollectionAddressDirectory addressDirectoryImpl = new CollectionAddressDirectory();
+    public static List<ChartData> dataForChart = new ArrayList<>();
+    public static String siteChart;
 
     private PrepareData prepareData = new PrepareData();
 
@@ -137,7 +142,8 @@ public class ControllerMain implements Initializable {
             @Override
             public void handle(MouseEvent event) {
                 if (event.getClickCount() ==2){
-                    updateRun();
+                    showChart();
+                    //updateRun();
                 }
             }
         });
@@ -187,5 +193,25 @@ public class ControllerMain implements Initializable {
             operationStage.initOwner(mainStage);
         }
         operationStage.showAndWait();
+    }
+
+    private void showChart(){
+        AddressStatusPing selectedAddress = (AddressStatusPing) tableAddressDirectory.getSelectionModel().getSelectedItem();
+        siteChart = selectedAddress.getAddress();
+        if (selectedAddress != null) {
+            try {
+                Stage stage = new Stage();
+                Parent root = FXMLLoader.load(getClass().getResource(FXMLCHART), resourceBundle);
+                stage.setTitle(fxmlLoader.getResources().getString("chart"));
+                stage.getIcons().add(new Image(ICO));
+                //stage.setResizable(false);
+                stage.setScene(new Scene(root));
+                stage.initModality(Modality.WINDOW_MODAL);
+                stage.initOwner(mainStage);
+                stage.showAndWait();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

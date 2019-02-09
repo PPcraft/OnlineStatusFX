@@ -24,6 +24,7 @@ public class Main extends Application {
     public static final String FXMLMAIN = "/fxml/main.fxml";
     public static final String FXMLCLEAR = "/fxml/clearDialog.fxml";
     public static final String FXMLOPERATION = "/fxml/operationDialog.fxml";
+    public static final String FXMLCHART = "/fxml/chart.fxml";
     public static final String LOCALEPATH = "bundles.Locale";
     public static final int NUMOFTHREADS = Runtime.getRuntime().availableProcessors();
 
@@ -74,7 +75,7 @@ public class Main extends Application {
         primaryStage.setTitle(fxmlLoader.getResources().getString("online_status"));
         primaryStage.setMinHeight(400);
         primaryStage.setMinWidth(700);
-        primaryStage.setScene(new Scene(fxmlMain, 700, 400));
+        primaryStage.setScene(new Scene(fxmlMain, 750, 400));
         primaryStage.show();
     }
 }
